@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "personal_info": {
+        "name": "<REDACTED>",
+        "email": "<REDACTED>",
+        "phone": "<REDACTED>"
+      },
+      "address": {
+        "street": "123 Main St",
+        "city": "New York",
+        "zip": "10001"
+      }
+    },
+    {
+      "id": 2,
+      "personal_info": {
+        "name": "<REDACTED>",
+        "email": "<REDACTED>",
+        "phone": "+1-555-987-6543"
+      },
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "Los Angeles",
+        "zip": "90210"
+      }
+    }
+  ],
+  "metadata": {
+    "created_by": "<REDACTED>",
+    "contact_email": "<REDACTED>",
+    "server_ip": "<REDACTED>",
+    "website": "https://example.com"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "personal_info": {
+        "name": "John Smith",
+        "email": "john.smith@email.com",
+        "phone": "555-123-4567"
+      },
+      "address": {
+        "street": "123 Main St",
+        "city": "New York",
+        "zip": "10001"
+      }
+    },
+    {
+      "id": 2,
+      "personal_info": {
+        "name": "Jane Doe", 
+        "email": "jane.doe@company.org",
+        "phone": "+1-555-987-6543"
+      },
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "Los Angeles", 
+        "zip": "90210"
+      }
+    }
+  ],
+  "metadata": {
+    "created_by": "Bob Johnson",
+    "contact_email": "bob@example.net",
+    "server_ip": "192.168.1.100",
+    "website": "https://example.com"
+  }
+}

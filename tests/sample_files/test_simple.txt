@@ -1,0 +1,19 @@
+This document contains various types of personally identifiable information for testing purposes.
+
+Customer Information:
+Name: John Smith
+Email: john.smith@email.com
+Phone: 0412 345 678
+Credit Card: 4532 1234 5678 9012
+
+Business Information:
+Australian Business Number (ABN): 12 345 678 901
+Australian Company Number (ACN): 123 456 789
+Tax File Number: 123456789
+
+Additional Personal Details:
+Medicare Number: 1234567890
+Driver's License: 12345678
+Address: 123 Main Street, Sydney NSW 2000
+
+This text file is used for testing the Presidio Desktop Redactor application with various Australian and international PII patterns.

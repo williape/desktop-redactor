@@ -1,0 +1,47 @@
+name,email,phone,passport_number,abn,acn,medicare_number,medicare_provider_number,dva_number,crn_number,notes
+John Anderson,john.anderson@gmail.com,+61-2-9876-5432,N1234567,48 622 841 748,123 456 780,2345 67890 1 2,,,212345678L,Business owner from Sydney
+Robert McDonald,r.mcdonald@veteran.com.au,+61-4-2222-5555,PA1234567,90 123 456 789,999 000 111,6950507391,,NX400751,War veteran
+Sarah Mitchell,s.mitchell@company.com.au,0412345678,P9876543,22 812 156 306,234 567 894,3456 78901 2 3,,,398765432B,Medicare cardholder and company director
+David Chen,david.chen@outlook.com,+61-3-5555-1234,L5678901,53456789012,345678908,4567 89012 3 4,,,411223344V,IT consultant with business registration
+Emma Thompson,emma.t@healthcare.gov.au,0498-765-432,M2345678,84 567 890 123,456 789 012,5678 90123 4 5,2438521X,,556677889S,Healthcare professional with provider number
+Michael O'Brien,michael.obrien@telstra.com,+61-7-3333-9999,K8765432,95 678 901 234,567 890 126,6789 01234 5 6,,,612 345 678T,Telecommunications employee
+Lisa Wang,lisa.wang@ato.gov.au,0487 123 456,R3456789,86 789 012 345,678 901 230,7890 12345 6 7,,,723456789C,Tax office employee
+James Roberts,j.roberts@westpac.com.au,+61-8-7777-2222,T6543210,57890123456,789012344,8901 23456 7 8,,,234567890H,Banking sector professional
+Sophie Martinez,sophie.m@education.qld.gov.au,0423-987-654,H7890123,04 326 066 116,890 123 458,9012 34567 8 9,2438531W,,4-987-654-321J,Education department staff with provider number
+Robert Taylor,rob.taylor@bigpond.com,+61-2-4444-8888,V4567890,34 459 214 374,901 234 562,0123 45678 9 0,,,311111111K,Private sector consultant
+Amanda Clarke,a.clarke@health.nsw.gov.au,0456-234-789,W1357924,26 857 458 193,012 345 676,1234 56789 0 1,,,299988877A,NSW Health employee
+Mark Wilson,mark.wilson@centrelink.gov.au,+61-3-6666-5555,X2468135,95 331 375 825,135 792 460,2345 67890 1 2,,,355 666 777V,Centrelink case worker
+Jennifer Lee,jen.lee@anz.com,0434-567-890,Y9753186,58 414 928 676,246 813 570,3456 78901 2 3,,,698765432X,ANZ bank manager
+Christopher Brown,chris.brown@commbank.com.au,+61-7-2222-3333,Z8642097,82 238 488 347,369 147 026,4567 89012 3 4,,,Commonwealth Bank advisor
+Rachel Green,rachel.g@medicare.gov.au,0478-901-234,A5926148,69265698392,481592634,5678 90123 4 5,2439051B,,Medicare Australia staff with provider number
+Daniel Kim,daniel.kim@nab.com.au,+61-8-1111-4444,B3704815,00 373 186 589,592 614 830,6789 01234 5 6,,,NAB financial advisor
+Dr. Patricia Williams,p.williams@medclinic.com.au,+61-3-8888-1111,G1234568,12 345 678 901,111 222 333,2298325523,2439041F,,GP with Medicare provider number
+Dr. Andrew Thompson,a.thompson@healthgroup.com.au,0467-555-123,H2345679,23 456 789 012,222 333 444,4951293141,2423391B,,Specialist doctor
+Nurse Rebecca Johnson,r.johnson@hospital.nsw.gov.au,+61-2-5555-7777,J3456780,34 567 890 123,333 444 555,2293653284,9988770W,,Registered nurse with provider number
+Dr. Steven Clarke,s.clarke@privatepractice.com.au,0422-888-999,K4567891,45 678 901 234,444 555 666,2951201841,3539440H,,Private practice doctor
+Allied Health Professional,m.davis@physio.com.au,+61-7-4444-2222,L5678902,56 789 012 345,555 666 777,6950507481,3530751J,,Physiotherapist
+Dr. Helen Garcia,h.garcia@specialists.com.au,0433-777-888,M6789013,67 890 123 456,666 777 888,3950387651,2054781W,,Medical specialist
+Thomas Mitchell,t.mitchell@dva.gov.au,+61-8-3333-4444,N7890124,78 901 234 567,777 888 999,2297582345,,NX400749,712-345-678A,DVA pensioner
+William Scott,w.scott@rsl.org.au,0456-111-222,P8901235,89 012 345 678,888 999 000,2295919745,,NX400750,698-765-432B,RSL member with DVA number
+Betty Anderson,b.anderson@aged.care.com.au,0487-333-444,R0123457,01 234 567 890,000 111 222,2951201841,,NX400752,DVA gold card holder
+Frank Williams,f.williams@community.org.au,+61-5-6666-7777,PB2345678,12 345 678 901,111 222 333,2297402204,,N 026027K,Community support worker
+Mary O'Connor,m.oconnor@healthcare.vic.gov.au,0478-444-555,T2345679,23 456 789 012,222 333 444,2298264833,,NX000098A,345987654K,Victorian health worker
+George Thompson,g.thompson@pensioner.org.au,+61-6-8888-9999,U3456780,34 567 890 123,333 444 555,4951293141,,NX840351,Aged pensioner
+Dr. Sandra Lee,s.lee@medcentre.com.au,0421-666-777,V4567891,45 678 901 234,444 555 666,3950921521,2121331W,,Medical centre director
+Pharmacist John Baker,j.baker@pharmacy.com.au,+61-3-7777-8888,W5678902,56 789 012 345,555 666 777,2951386024,2429591L,,Community pharmacist
+Dr. Maria Rodriguez,m.rodriguez@dental.com.au,0434-999-000,X6789013,67 890 123 456,666 777 888,4951293141,2429581T,,Dental practitioner
+Optometrist Lisa Chen,l.chen@eyecare.com.au,+61-2-1111-2222,Y7890124,78 901 234 567,777 888 999,2398125261,2409661B,,Eye care specialist
+Dr. Paul Wilson,p.wilson@radiology.com.au,0445-222-333,Z8901235,89 012 345 678,888 999 000,2953878151,3537970X,,Radiologist
+Clinical Psychologist,j.taylor@mentalhealth.com.au,+61-4-3333-4444,A9012346,90 123 456 789,999 000 111,2950975361,,,Mental health professional
+Katherine Brown,k.brown@pathology.com.au,0456-444-555,B0123457,01 234 567 890,000 111 222,2953878061,,,Pathology technician
+Dr. Richard Davis,r.davis@surgery.com.au,+61-7-5555-6666,C1234568,12 345 678 901,111 222 333,2951386024,,,Surgical consultant
+Podiatrist Anne White,a.white@footcare.com.au,0467-555-666,D2345679,23 456 789 012,222 333 444,2951201841,,,Foot care specialist
+Dr. Michelle Green,m.green@cardiology.com.au,+61-8-6666-7777,E3456780,34 567 890 123,333 444 555,2298039874,,,Cardiac specialist
+Dietitian Peter Jones,p.jones@nutrition.com.au,0478-666-777,F4567891,45 678 901 234,444 555 666,2297460336,,,Nutrition specialist
+Dr. Jennifer Adams,j.adams@oncology.com.au,+61-3-7777-8888,G5678902,56 789 012 345,555 666 777,2951386024,,,Oncology specialist
+Speech Therapist Carol,c.miller@therapy.com.au,0489-777-888,H6789013,67 890 123 456,666 777 888,2296510126,,,Speech pathologist
+Dr. Kevin Murphy,k.murphy@neurology.com.au,+61-4-8888-9999,PC7890124,78 901 234 567,777 888 999,6951393261,,,Neurologist
+Occupational Therapist,s.taylor@rehab.com.au,0490-888-999,J8901235,89 012 345 678,888 999 000,5500393925,,,Rehabilitation specialist
+Dr. Angela Martin,a.martin@endocrine.com.au,+61-5-9999-0000,K9012346,90 123 456 789,999 000 111,5500053243,,,Endocrinologist
+Chiropractor Mark Lee,m.lee@chiro.com.au,0401-999-000,L0123457,01 234 567 890,000 111 222,2953878331,,,Chiropractic practitioner
+Dr. Caroline White,c.white@dermatology.com.au,+61-2-0000-1111,M1234568,12 345 678 901,111 222 333,2953878241,,,Dermatology specialist

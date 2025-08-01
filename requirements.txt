@@ -1,0 +1,37 @@
+# PyQt5 GUI framework
+PyQt5==5.15.11
+
+# Core dependencies
+presidio-analyzer==2.2.359
+presidio-anonymizer==2.2.359
+pandas==2.3.1
+chardet==5.2.0
+
+# Base NLP framework (required)
+spacy==3.8.7
+
+# Additional NLP frameworks (optional)
+# Users can install these for expanded model support:
+#
+# For Transformers support:
+# transformers>=4.21.0
+# torch>=1.12.0
+#
+# For Flair support:
+# flair>=0.12.0
+# torch>=1.12.0
+#
+# For Stanza support:
+# stanza>=1.4.0
+#
+# Note: PyTorch is required for transformers, flair, and some stanza models
+# Install with: pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+# Configuration management
+PyYAML==6.0.2
+
+# Development tools
+PyInstaller==6.14.2
+
+# Testing
+pytest==8.4.1

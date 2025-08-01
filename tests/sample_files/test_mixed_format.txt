@@ -1,0 +1,34 @@
+Mixed Format Document for Testing
+==================================
+
+Email List:
+- admin@company.com
+- support@helpdesk.org  
+- user123@gmail.com
+
+Phone Directory:
+Australia: +61 2 1234 5678, 0412 345 678, (03) 9876 5432
+United States: +1 555-123-4567, (555) 987-6543
+United Kingdom: +44 20 7123 4567
+
+IP Addresses and URLs:
+- Server IP: 192.168.1.100
+- Website: https://www.example.com/secure
+- API Endpoint: http://api.company.com/v1/users
+
+Credit Card Numbers:
+Visa: 4111 1111 1111 1111
+MasterCard: 5555 5555 5555 4444
+American Express: 3782 822463 10005
+
+Australian Specific Data:
+TFN: 123456789
+ABN: 12 345 678 901
+Medicare: 1234567890
+Passport: A1234567
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Contact details: james.wilson@email.com or call 0400 123 456.
+The IP address 10.0.0.1 should be whitelisted for access.
+
+This file tests mixed content with various PII types interspersed with regular text.

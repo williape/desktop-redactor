@@ -1,0 +1,39 @@
+Australian Government Services Document
+===========================================
+
+Client Details:
+- Full Name: Sarah Michelle Johnson
+- Date of Birth: 15/03/1985
+- Email Address: sarah.johnson@gov.au
+- Mobile Phone: 0411 234 567
+- Home Phone: 02 9876 5432
+
+Government Identifiers:
+- Tax File Number: 123 456 782
+- Medicare Number: 2234567890
+- Medicare Provider Number: 123456A
+- Department of Veterans' Affairs File Number: N123456W
+- Centrelink Customer Reference Number: 123 456 789J
+
+Financial Information:
+- Bank Account BSB: 062-000
+- Account Number: 12345678
+- Credit Card: 5555 4444 3333 2222
+
+Passport Information:
+- Australian Passport: N1234567
+- Issued: Sydney, NSW
+- Expiry: 15/03/2035
+
+Driver's License Information:
+- NSW License Number: 12345678
+- License Class: C
+- Expiry Date: 15/03/2027
+
+Business Registration:
+- Company Name: Johnson Consulting Pty Ltd
+- Australian Business Number: 98 765 432 109
+- Australian Company Number: 987 654 321
+
+This document contains comprehensive Australian PII data for thorough testing of the redaction system.
+All information is fictional and created for testing purposes only.
