@@ -37,6 +37,9 @@ else
 fi
 
 # Create DMG installer with simplified configuration to avoid AppleScript errors
+echo "Creating DMG installer..."
+# Remove any existing DMG to avoid "File exists" error
+rm -f "Presidio Desktop Redactor.dmg"
 create-dmg \
     --volname "Presidio Desktop Redactor" \
     --window-size 600 400 \
