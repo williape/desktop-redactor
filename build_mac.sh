@@ -6,8 +6,9 @@ source venv/bin/activate
 # Clean previous builds
 rm -rf build dist
 
-# Phase 5: Reduced build size by only bundling essential models
-# Users can import additional models after installation
+# Bundle only small and medium spaCy models (not large)
+echo "Bundling small and medium spaCy models only..."
+
 pyinstaller --clean --onedir --windowed \
     --name "Presidio Desktop Redactor" \
     --icon "src/resources/icons/app_icon.icns" \
@@ -22,9 +23,7 @@ pyinstaller --clean --onedir --windowed \
     --hidden-import "yaml" \
     src/main.py
 
-# Note: Large models (en_core_web_lg) are no longer bundled to reduce installer size
-# Users can import them using the model management interface
-echo "Note: Large models excluded from bundle. Users can import via UI."
+echo "Build complete with small and medium models. Large model excluded for size optimization."
 
 # Code signing (if developer certificate available)
 if [ -n "$CODESIGN_IDENTITY" ]; then
@@ -37,14 +36,11 @@ else
     echo "To sign: export CODESIGN_IDENTITY='Developer ID Application: Your Name'"
 fi
 
-# Create DMG installer
+# Create DMG installer with simplified configuration to avoid AppleScript errors
 create-dmg \
     --volname "Presidio Desktop Redactor" \
-    --window-pos 200 120 \
     --window-size 600 400 \
     --icon-size 100 \
-    --icon "Presidio Desktop Redactor.app" 200 190 \
-    --hide-extension "Presidio Desktop Redactor.app" \
     --app-drop-link 400 190 \
     "Presidio Desktop Redactor.dmg" \
     "dist/"

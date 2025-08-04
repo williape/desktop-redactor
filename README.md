@@ -5,42 +5,31 @@ A desktop application for automatically detecting and redacting personally ident
 ## 📋 Features
 
 ### Core Functionality
-- **Modern Sidebar Interface**: Resizable sidebar with organized settings and controls
 - **Real-Time Preview System**: Live source and output previews with instant updates
 - **Comprehensive Findings Analysis**: Detailed findings table with sorting, filtering, and statistics
 - **File Support**: CSV, JSON, and TXT files up to 10MB (soft limit with warning)
 - **PII Detection**: 15 entity types including Australian-specific patterns
 - **Background Processing**: Non-blocking UI with real-time progress tracking
-- **Multiple Anonymization Methods**: Replace, Redact, Mask, Hash, **Encrypt**
+- **Multiple Anonymization Methods**: Replace, Redact, Mask, Hash, Encrypt
 - **Advanced Encryption**: AES-256-GCM encryption with PBKDF2 key derivation
 - **Robust File Handling**: UTF-8 → ISO-8859-1 → chardet encoding fallback
-- **Professional UI**: Drag-and-drop interface with native macOS styling
+- **Drag and Drop Interface**: browse for local or just drop files onto the app
 
 ### Supported PII Types
 - **Personal**: Names, email addresses, phone numbers
 - **Financial**: Credit card numbers, IP addresses, URLs
 - **Australian Entities**: ABN, ACN, TFN, Medicare card numbers, Medicare provider numbers, DVA file numbers, Centrelink CRN numbers, Passport numbers, Driver's License numbers
-- **Enhanced Recognition**: Custom Australian phone number patterns (mobile/landline)
+- **Enhanced Recognition**: Custom Australian phone number patterns (mobile/landline) and postal addresses
 
 ### Advanced Features
 - **Interactive Preview System**: Real-time source and output previews with entity highlighting
 - **Enhanced Findings Analysis**: Comprehensive findings table with 8-15 columns of entity data
 - **Decision Process Analysis**: Toggle detailed analysis to see Presidio's detection reasoning
-- **Pattern Visibility**: View actual regex patterns used for PII detection
 - **Export Functionality**: Export findings table data to CSV for further analysis
 - **Advanced Filtering**: Filter findings by confidence, entity type, and text search
-- **Multiple NER Framework Support**: Choose from spaCy, Transformers, Flair, and Stanza models
-- **Model Management System**: Import and manage NER models from multiple frameworks
-- **Reduced Distribution Size**: Smaller installer with user-managed model expansion
-- **Collapsible UI**: Toggle entity sections to manage sidebar space efficiently
-- **Enhanced Row Selection**: Improved table highlighting for better visibility
-- **Entity-Specific Replacement**: Different replacement patterns per entity type
-- **Encryption Support**: Secure AES-256-GCM encryption with user-provided keys
-- **Key Management**: Generate, import, export encryption keys with strength validation
+- **Multiple NER Framework Support**: Leverage Named Entity Recognition (NER) models for context-aware PII detection - spaCy, Transformers, Flair, and Stanza
+- **Encryption Support**: Secure AES-256-GCM encryption with user-provided or generated keys
 - **Custom Lists**: Allowlist/denylist functionality for fine-tuned PII detection
-- **Comprehensive Logging**: Configurable debug mode, log rotation, exception handling
-- **Progress Tracking**: 4-stage progress indicator (10%, 25%, 75%, 100%)
-- **Error Recovery**: Graceful handling of encoding issues, malformed data
 - **Output Preservation**: Maintains original file structure with timestamped output
 
 ## 🏗️ Architecture
@@ -81,7 +70,7 @@ src/
 ### Supported Frameworks
 The application supports multiple NLP frameworks for entity recognition:
 
-- **spaCy**: Fast, production-ready models (bundled: sm, md)
+- **spaCy**: Fast, production-ready models (bundled: sm, md), lg is optional
 - **Transformers**: Hugging Face transformer models for advanced NER
 - **Flair**: State-of-the-art sequence labeling models
 - **Stanza**: Stanford NLP multilingual models
@@ -90,9 +79,6 @@ The application supports multiple NLP frameworks for entity recognition:
 The application comes with these pre-installed models:
 - **en_core_web_sm**: Small spaCy model (~13MB) - Fast processing
 - **en_core_web_md**: Medium spaCy model (~43MB) - Balanced performance
-
-### Model Import System
-Users can import additional models to expand detection capabilities:
 
 #### Model Storage Location
 All imported models are stored in:
@@ -188,6 +174,7 @@ The application automatically validates imported models:
 
 - **macOS**: 10.14 (Mojave) or later
 - **Python**: 3.8+ (3.13+ recommended)
+- **Pip**: 3+
 - **Homebrew**: For build dependencies
 
 ### Development Setup
@@ -300,40 +287,24 @@ pyinstaller --clean --onedir --windowed \
 
 ### Deliverables
 - **`dist/Presidio Desktop Redactor.app`**: macOS application bundle
-- **`Presidio Desktop Redactor.dmg`**: Professional installer package (~250MB, reduced from 909MB)
-- **`Quick_Start_Guide.md`**: Complete user documentation with model management guide
+- **`Presidio Desktop Redactor.dmg`**: Professional installer package (~250MB)
+- **`Quick_Start_Guide.md`**: User documentation with model management guide
 
 ## 🔧 Technology Stack
 
 ### Core Technologies
 - **Python 3.8+**: Primary programming language
-- **PyQt5 5.15.9**: Cross-platform GUI framework
+- **PyQt5 5.15.11**: Cross-platform GUI framework
 - **Microsoft Presidio**: PII detection and anonymization
   - presidio-analyzer 2.2.35
   - presidio-anonymizer 2.2.35
-- **pandas 2.0.3**: CSV data processing
-- **spaCy 3.7.2**: NLP processing with en_core_web_lg model
+- **pandas 2.3.1**: CSV data processing
+- **spaCy 3.8.7**: NLP processing with en_core_web_md model
 
 ### Development Tools
 - **PyInstaller 6.3.0**: Application packaging
 - **create-dmg**: macOS DMG installer creation
 - **chardet 5.2.0**: Character encoding detection
-
-### Custom Components
-- **Enhanced Phone Recognition**: Australian mobile/landline patterns
-- **Medicare Provider Recognition**: Australian healthcare provider validation
-- **DVA File Number Recognition**: Department of Veterans' Affairs validation
-- **Model Manager**: Multi-framework NLP model registry and validation  
-- **NLP Engine Factory**: Dynamic engine creation for multiple frameworks
-- **Custom NLP Engines**: Flair and Stanza framework integrations  
-- **Model Import System**: User-friendly model installation and management  
-- **Encryption Manager**: AES-256-GCM encryption with PBKDF2 key derivation
-- **List Management**: Allowlist/denylist for custom PII detection rules
-- **Preview System**: Real-time source and output data sampling with highlighting
-- **Findings Analysis**: Comprehensive entity detection reporting with filtering
-- **Sidebar Interface**: Resizable sidebar with organized settings and controls
-- **Background Processing**: QThread-based non-blocking UI
-- **Comprehensive Logging**: Rotating logs with debug mode support
 
 ## 📝 Configuration
 
@@ -424,11 +395,6 @@ The application includes custom recognizers for Australian PII patterns:
 - **Memory Usage**: Entire file loaded into memory
 - **Processing**: Single-threaded analysis with UI separation
 
-### Optimization Opportunities
-- **Chunking**: Large file processing in segments
-- **Streaming**: Process files without full memory load
-- **Parallel Processing**: Multi-threaded entity analysis
-
 ## 🛠️ Development Guidelines
 
 ### Code Organization
@@ -473,13 +439,13 @@ The application includes custom recognizers for Australian PII patterns:
 
 1. **spaCy Model Missing**
    ```bash
-   python3 -m spacy download en_core_web_lg
+   python3 -m spacy download en_core_web_md
    ```
 
 2. **PyQt5 Import Errors**
    ```bash
    source venv/bin/activate
-   pip3 install PyQt5==5.15.9
+   pip3 install PyQt5==5.15.11
    ```
 
 3. **Build Failures**
@@ -508,9 +474,7 @@ The MIT License (MIT)
 
 This project is based directly on the [Microsoft Presidio project](https://github.com/microsoft/presidio/) and is not intended to be a commercial product.
 
-This project follows a structured development approach with clear separation between MVP and future enhancements. See `CLAUDE.md` for detailed development guidance and `specs/mvp-prd.md` for product requirements.
-
 ---
 
-**Version**: 1.6
+**Version**: 1.7
 **Last Updated**: July 2025  
