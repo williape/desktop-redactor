@@ -1,10 +1,47 @@
 import sys
 import os
+import fcntl
+import tempfile
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QColor
 from ui.main_window import PresidioRedactorMainWindow
 from utils.logging_config import LoggingConfig, check_debug_flag
+
+# Global lock file for singleton behavior
+_lock_file = None
+
+def acquire_singleton_lock():
+    """Acquire a file lock to ensure only one instance runs"""
+    global _lock_file
+    lock_path = os.path.join(tempfile.gettempdir(), 'presidio_desktop_redactor.lock')
+    
+    try:
+        _lock_file = open(lock_path, 'w')
+        fcntl.flock(_lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        _lock_file.write(str(os.getpid()))
+        _lock_file.flush()
+        return True
+    except (IOError, OSError):
+        if _lock_file:
+            _lock_file.close()
+            _lock_file = None
+        return False
+
+# Prevent multiple instances when frozen with PyInstaller
+if getattr(sys, 'frozen', False):
+    import multiprocessing
+    # This prevents child processes from re-executing the main application
+    multiprocessing.freeze_support()
+    
+    # Additional guard: if this is not in the main process, exit immediately
+    if __name__ != '__main__':
+        sys.exit(0)
+    
+    # Singleton lock for PyInstaller apps
+    if not acquire_singleton_lock():
+        print("Another instance is already running.")
+        sys.exit(0)
 
 def main():
     # Initialize logging before anything else
@@ -71,4 +108,17 @@ def main():
         sys.exit(1)
 
 if __name__ == '__main__':
+    # Critical for preventing multiple app instances on macOS with PyInstaller
+    if getattr(sys, 'frozen', False):
+        import multiprocessing
+        multiprocessing.freeze_support()
+        
+        # Additional safety: set spawn method to prevent fork issues
+        try:
+            multiprocessing.set_start_method('spawn', force=True)
+        except RuntimeError:
+            # Method already set, ignore
+            pass
+    
+    # Only run main if we're really in the main process
     main()

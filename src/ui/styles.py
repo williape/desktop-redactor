@@ -60,13 +60,14 @@ NER_MODELS = [
         'display': 'spaCy/en_core_web_lg',
         'package': 'en_core_web_lg',
         'type': 'spacy',
-        'default': True
+        'default': False  # Not bundled in PyInstaller builds
     },
     {
         'id': 'spacy_md', 
         'display': 'spaCy/en_core_web_md',
         'package': 'en_core_web_md',
-        'type': 'spacy'
+        'type': 'spacy',
+        'default': True  # Default for PyInstaller builds
     },
     {
         'id': 'spacy_sm',

@@ -169,6 +169,44 @@ class ModelManager:
         """Check if a spaCy model is available"""
         try:
             import spacy
+            import sys
+            import os
+            
+            # For PyInstaller bundles, check bundled models first
+            if getattr(sys, 'frozen', False):
+                # Get bundle directory (same logic as presidio_manager)
+                if hasattr(sys, '_MEIPASS'):
+                    bundle_dir = sys._MEIPASS
+                    
+                    # For macOS app bundles, check Resources directory for complete models
+                    if 'Contents' in sys.executable:
+                        executable_dir = os.path.dirname(sys.executable)
+                        contents_dir = executable_dir
+                        while contents_dir and not contents_dir.endswith('Contents'):
+                            contents_dir = os.path.dirname(contents_dir)
+                        resources_dir = os.path.join(contents_dir, 'Resources')
+                        
+                        if os.path.exists(resources_dir):
+                            models_in_resources = [d for d in os.listdir(resources_dir) if d.startswith('en_core_web')]
+                            if models_in_resources:
+                                bundle_dir = resources_dir
+                
+                # Try different nested structures for bundled models
+                model_paths_to_try = [
+                    os.path.join(bundle_dir, model_name, model_name, f"{model_name}-3.8.0"),
+                    os.path.join(bundle_dir, model_name, model_name),
+                    os.path.join(bundle_dir, model_name)
+                ]
+                
+                for model_path in model_paths_to_try:
+                    if os.path.exists(model_path):
+                        try:
+                            spacy.load(model_path)
+                            return True
+                        except Exception:
+                            continue
+            
+            # Try standard spaCy loading
             spacy.load(model_name)
             return True
         except (ImportError, OSError):

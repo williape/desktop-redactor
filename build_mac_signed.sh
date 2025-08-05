@@ -15,12 +15,37 @@ pyinstaller --clean --onedir --windowed \
     --add-data "venv/lib/python*/site-packages/spacy/lang:spacy/lang" \
     --add-data "venv/lib/python*/site-packages/en_core_web_sm:en_core_web_sm" \
     --add-data "venv/lib/python*/site-packages/en_core_web_md:en_core_web_md" \
+    --add-data "src/ui:ui" \
+    --add-data "src/core:core" \
+    --add-data "src/utils:utils" \
+    --add-data "src/resources:resources" \
+    --add-data "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/presidio_analyzer:presidio_analyzer" \
+    --paths "src" \
     --hidden-import "spacy" \
     --hidden-import "presidio_analyzer" \
     --hidden-import "presidio_anonymizer" \
     --hidden-import "pandas" \
     --hidden-import "pandas._libs.tslibs.base" \
     --hidden-import "yaml" \
+    --hidden-import "ui" \
+    --hidden-import "ui.main_window" \
+    --hidden-import "ui.components" \
+    --hidden-import "ui.components.preview_panel" \
+    --hidden-import "ui.components.findings_table" \
+    --hidden-import "ui.widgets" \
+    --hidden-import "ui.widgets.encryption_widget" \
+    --hidden-import "ui.widgets.list_widget" \
+    --hidden-import "core" \
+    --hidden-import "core.presidio_manager" \
+    --hidden-import "core.file_processor" \
+    --hidden-import "core.custom_recognizers" \
+    --hidden-import "core.encryption_manager" \
+    --hidden-import "core.list_manager" \
+    --hidden-import "core.preview_manager" \
+    --hidden-import "core.findings_model" \
+    --hidden-import "utils" \
+    --hidden-import "utils.logging_config" \
+    --hidden-import "utils.config_manager" \
     src/main.py
 
 echo "Build complete with small and medium models."
@@ -86,11 +111,28 @@ if [ -n "$CODESIGN_IDENTITY" ]; then
         codesign --force --verbose --timestamp --options runtime --sign "$CODESIGN_IDENTITY" "$file" || echo "Failed to sign: $file"
     done
     
-    # Sign all frameworks
+    # Sign all frameworks and their internal binaries
     echo "Signing frameworks..."
-    find "$SIGN_PATH" -name "*.framework" -print0 | while IFS= read -r -d '' file; do
-        echo "Signing: $file"
-        codesign --force --verbose --timestamp --options runtime --sign "$CODESIGN_IDENTITY" "$file" || echo "Failed to sign: $file"
+    find "$SIGN_PATH" -name "*.framework" -print0 | while IFS= read -r -d '' framework; do
+        echo "Signing framework: $framework"
+        # Sign the main framework binary if it exists
+        framework_name=$(basename "$framework" .framework)
+        framework_binary="$framework/Versions/Current/$framework_name"
+        if [ ! -f "$framework_binary" ]; then
+            # Try alternative paths
+            framework_binary="$framework/Versions/5/$framework_name"
+        fi
+        if [ ! -f "$framework_binary" ]; then
+            framework_binary="$framework/$framework_name"
+        fi
+        
+        if [ -f "$framework_binary" ]; then
+            echo "Signing framework binary: $framework_binary"
+            codesign --force --verbose --timestamp --options runtime --sign "$CODESIGN_IDENTITY" "$framework_binary" || echo "Failed to sign: $framework_binary"
+        fi
+        
+        # Sign the framework bundle itself
+        codesign --force --verbose --timestamp --options runtime --sign "$CODESIGN_IDENTITY" "$framework" || echo "Failed to sign: $framework"
     done
     
     # Sign the main executable (different paths for app bundle vs onedir)
@@ -144,6 +186,12 @@ if [ -n "$CODESIGN_IDENTITY" ]; then
 else
     echo "Warning: No code signing identity set. App may be blocked by Gatekeeper."
     echo "To sign: export CODESIGN_IDENTITY='Developer ID Application: name (team-ID)'"
+fi
+
+# Clean up onedir format if it exists (only keep app bundle)
+if [ -d "dist/Presidio Desktop Redactor" ]; then
+    echo "Removing onedir format to avoid conflicts in DMG..."
+    rm -rf "dist/Presidio Desktop Redactor"
 fi
 
 # Create DMG installer

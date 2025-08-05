@@ -47,9 +47,165 @@ class PresidioManager:
             logging.error(f"Failed to initialize Presidio: {e}")
             raise
     
+    def _get_best_available_spacy_model(self):
+        """Get the best available spaCy model with fallback logic"""
+        import sys
+        import os
+        
+        # Priority order: medium -> small -> large (if available)
+        model_priority = ["en_core_web_md", "en_core_web_sm", "en_core_web_lg"]
+        
+        # In PyInstaller, models may be in different locations
+        if getattr(sys, 'frozen', False):
+            # Running in PyInstaller bundle - models are in Resources
+            if hasattr(sys, '_MEIPASS'):
+                bundle_dir = sys._MEIPASS
+                logging.debug(f"Using sys._MEIPASS: {bundle_dir}")
+                
+                # For macOS app bundles, also check Resources directory for complete models
+                if 'Contents' in sys.executable:
+                    # We're in a macOS app bundle, try Resources directory first
+                    executable_dir = os.path.dirname(sys.executable)
+                    contents_dir = executable_dir
+                    while contents_dir and not contents_dir.endswith('Contents'):
+                        contents_dir = os.path.dirname(contents_dir)
+                    resources_dir = os.path.join(contents_dir, 'Resources')
+                    
+                    if os.path.exists(resources_dir):
+                        models_in_resources = [d for d in os.listdir(resources_dir) if d.startswith('en_core_web')]
+                        if models_in_resources:
+                            logging.debug(f"Found models in Resources: {models_in_resources}, using Resources instead of _MEIPASS")
+                            bundle_dir = resources_dir
+            else:
+                # For macOS app bundles, resources are in Contents/Resources
+                executable_dir = os.path.dirname(sys.executable)
+                logging.debug(f"Executable: {sys.executable}")
+                logging.debug(f"Executable directory: {executable_dir}")
+                
+                if 'MacOS' in executable_dir:
+                    # Find the Contents directory by going up from MacOS
+                    contents_dir = executable_dir
+                    while contents_dir and not contents_dir.endswith('Contents'):
+                        contents_dir = os.path.dirname(contents_dir)
+                    bundle_dir = os.path.join(contents_dir, 'Resources')
+                else:
+                    # Fallback - look for Resources relative to executable
+                    bundle_dir = os.path.join(executable_dir, '..', 'Resources')
+                    bundle_dir = os.path.abspath(bundle_dir)
+            logging.debug(f"Running in PyInstaller bundle, bundle_dir: {bundle_dir}")
+            
+            # Double-check the path exists and contains models
+            if os.path.exists(bundle_dir):
+                models_in_bundle = [d for d in os.listdir(bundle_dir) if d.startswith('en_core_web')]
+                logging.debug(f"Models found in bundle: {models_in_bundle}")
+            else:
+                logging.debug(f"Bundle directory does not exist: {bundle_dir}")
+        
+        for model_name in model_priority:
+            try:
+                import spacy
+                
+                # For PyInstaller bundles, check if model directory exists first
+                if getattr(sys, 'frozen', False):
+                    # Check in the bundle resources - try different nested structures
+                    model_paths_to_try = [
+                        # Three-level nesting: en_core_web_md/en_core_web_md/en_core_web_md-3.8.0/
+                        os.path.join(bundle_dir, model_name, model_name, f"{model_name}-3.8.0"),
+                        # Two-level nesting: en_core_web_md/en_core_web_md/
+                        os.path.join(bundle_dir, model_name, model_name),
+                        # Single-level: en_core_web_md/
+                        os.path.join(bundle_dir, model_name)
+                    ]
+                    
+                    for model_path in model_paths_to_try:
+                        if os.path.exists(model_path):
+                            logging.info(f"Found bundled model at: {model_path}")
+                            try:
+                                nlp = spacy.load(model_path)
+                                logging.info(f"Successfully loaded model from path: {model_name}")
+                                return model_path
+                            except Exception as e:
+                                logging.debug(f"Failed to load model from path {model_path}: {e}")
+                                continue
+                
+                # Try standard spaCy loading
+                spacy.load(model_name)
+                logging.info(f"Selected spaCy model: {model_name}")
+                return model_name
+                
+            except OSError:
+                logging.debug(f"Model {model_name} not available")
+                continue
+            except Exception as e:
+                logging.debug(f"Error checking model {model_name}: {e}")
+                continue
+        
+        # If no models are available, this will cause an error which is what we want
+        # so the user knows something is wrong with the installation
+        raise RuntimeError("No spaCy models available. Please ensure at least one English model is installed.")
+    
+    def _ensure_presidio_config_available(self):
+        """Ensure Presidio configuration files are accessible in PyInstaller bundles"""
+        import sys
+        import os
+        import shutil
+        
+        if not getattr(sys, 'frozen', False):
+            return  # Not in PyInstaller bundle
+            
+        # Presidio looks for config in sys._MEIPASS/presidio_analyzer/conf/
+        # But we bundled it to Resources, so copy it if needed
+        if hasattr(sys, '_MEIPASS'):
+            meipass_config_dir = os.path.join(sys._MEIPASS, 'presidio_analyzer', 'conf')
+            
+            # Check if config already exists in MEIPASS location
+            if not os.path.exists(os.path.join(meipass_config_dir, 'default_recognizers.yaml')):
+                # Find config in Resources
+                if 'Contents' in sys.executable:
+                    executable_dir = os.path.dirname(sys.executable)
+                    contents_dir = executable_dir
+                    while contents_dir and not contents_dir.endswith('Contents'):
+                        contents_dir = os.path.dirname(contents_dir)
+                    resources_config_dir = os.path.join(contents_dir, 'Resources', 'presidio_analyzer', 'conf')
+                    
+                    if os.path.exists(resources_config_dir):
+                        # Create the target directory
+                        os.makedirs(meipass_config_dir, exist_ok=True)
+                        
+                        # Copy config files
+                        for config_file in os.listdir(resources_config_dir):
+                            src = os.path.join(resources_config_dir, config_file)
+                            dst = os.path.join(meipass_config_dir, config_file)
+                            if os.path.isfile(src):
+                                shutil.copy2(src, dst)
+                                logging.debug(f"Copied Presidio config: {config_file}")
+                        
+                        logging.info(f"Presidio configuration files made available at: {meipass_config_dir}")
+                    else:
+                        logging.warning(f"Could not find Presidio config files in Resources: {resources_config_dir}")
+    
     def _initialize_default_analyzer(self):
         """Initialize the default analyzer with custom recognizers"""
-        self.analyzer = AnalyzerEngine()
+        # For PyInstaller bundles, ensure Presidio config files are accessible
+        self._ensure_presidio_config_available()
+        
+        # Get the best available spaCy model instead of letting Presidio default to en_core_web_lg
+        available_model = self._get_best_available_spacy_model()
+        
+        # Import necessary classes for NLP engine configuration
+        from presidio_analyzer.nlp_engine import NlpEngineProvider
+        
+        # Create NLP engine provider with specific model
+        nlp_configuration = {
+            "nlp_engine_name": "spacy",
+            "models": [{"lang_code": "en", "model_name": available_model}]
+        }
+        
+        provider = NlpEngineProvider(nlp_configuration=nlp_configuration)
+        nlp_engine = provider.create_engine()
+        
+        # Initialize analyzer with specific NLP engine
+        self.analyzer = AnalyzerEngine(nlp_engine=nlp_engine)
         
         # Remove the default phone recognizer
         phone_recognizers_to_remove = []
@@ -152,7 +308,54 @@ class PresidioManager:
     
     def _get_spacy_model_name(self, model: ModelInfo) -> str:
         """Get the appropriate spaCy model name"""
-        if model.status == "bundled":
+        import sys
+        
+        if model.status == "bundled" and getattr(sys, 'frozen', False):
+            # For bundled models in PyInstaller, return the actual path
+            import os
+            
+            model_name = None
+            if "sm" in model.id:
+                model_name = "en_core_web_sm"
+            elif "md" in model.id:
+                model_name = "en_core_web_md"
+            elif "lg" in model.id:
+                model_name = "en_core_web_lg"
+            
+            if model_name:
+                # Use the same path resolution logic as _get_best_available_spacy_model
+                if hasattr(sys, '_MEIPASS'):
+                    bundle_dir = sys._MEIPASS
+                    
+                    # For macOS app bundles, check Resources directory
+                    if 'Contents' in sys.executable:
+                        executable_dir = os.path.dirname(sys.executable)
+                        contents_dir = executable_dir
+                        while contents_dir and not contents_dir.endswith('Contents'):
+                            contents_dir = os.path.dirname(contents_dir)
+                        resources_dir = os.path.join(contents_dir, 'Resources')
+                        
+                        if os.path.exists(resources_dir):
+                            models_in_resources = [d for d in os.listdir(resources_dir) if d.startswith('en_core_web')]
+                            if models_in_resources:
+                                bundle_dir = resources_dir
+                    
+                    # Try different nested structures
+                    model_paths_to_try = [
+                        os.path.join(bundle_dir, model_name, model_name, f"{model_name}-3.8.0"),
+                        os.path.join(bundle_dir, model_name, model_name),
+                        os.path.join(bundle_dir, model_name)
+                    ]
+                    
+                    for model_path in model_paths_to_try:
+                        if os.path.exists(model_path):
+                            return model_path
+            
+            # Fallback to standard name
+            return model_name or "en_core_web_md"
+        
+        elif model.status == "bundled":
+            # Not in PyInstaller, use standard names
             if "sm" in model.id:
                 return "en_core_web_sm"
             elif "md" in model.id:
