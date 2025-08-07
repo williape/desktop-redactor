@@ -10,14 +10,11 @@ The **Presidio Desktop Redactor** is a desktop application designed to automatic
 
 ## Current Project Status
 
-**Phase**: Production Ready
 **Target Platform**: macOS (primary), Windows (future)
 **Architecture**: Python-based desktop application with PyQt5 GUI
 **UI Architecture**: Modern sidebar layout with real-time preview, advanced findings analysis, and decision process insights
 
 ## Project Structure
-
-The implementation is complete with the following structure:
 
 ```
 presidio-desktop-redactor/
@@ -68,7 +65,7 @@ presidio-desktop-redactor/
   - presidio-analyzer (v2.2.35)
   - presidio-anonymizer (v2.2.35)
 - **pandas**: CSV data processing
-- **spaCy**: NLP model for text analysis (en_core_web_lg)
+- **spaCy**: NLP model for text analysis (en_core_web_md)
 
 ### Development & Build Tools
 - **PyInstaller==6.14.1**: Creates standalone executables (onedir mode)
@@ -78,7 +75,7 @@ presidio-desktop-redactor/
 - **iconutil**: macOS built-in tool for creating icon sets
 
 ### Critical Dependencies
-- **spaCy en_core_web_lg model**: Must be downloaded separately with `python -m spacy download en_core_web_lg`
+- **spaCy en_core_web_lg models**: Must be downloaded separately with `python -m spacy download en_core_web_lg`
 - **PyQt5**: May need to be installed via Homebrew on macOS (commented in requirements.txt)
 
 ### Testing Approach

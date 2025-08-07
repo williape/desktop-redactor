@@ -1,6 +1,6 @@
 # Acknowledgements
 
-The Presidio Desktop Redactor project is built upon the exceptional work of numerous open-source projects and their contributors. We extend our sincere gratitude to the following:
+The Desktop Redactor project is built upon the exceptional work of numerous open-source projects and their contributors. We extend our sincere gratitude to the following:
 
 ## Core Frameworks
 
@@ -52,7 +52,7 @@ The Presidio Desktop Redactor project is built upon the exceptional work of nume
 ### cryptography
 - **Project**: [cryptography](https://github.com/pyca/cryptography)
 - **License**: Apache License 2.0 / BSD License
-- **Contribution**: Powers our AES-256-GCM encryption capabilities for secure PII anonymization, with PBKDF2 key derivation and secure memory handling.
+- **Contribution**: Powers our AES encryption capabilities for secure PII anonymization, with PBKDF2 key derivation and secure memory handling.
 
 ## Additional Dependencies
 
